@@ -1,16 +1,9 @@
- import './App.css';
+import { useState } from 'react';
+import './App.css';
 import stormtrooper from './stormtrooper.jpg'
 import List from './List';
+import CharacterModal from './CharacterModal';
 import { useQuery, gql } from "@apollo/client";
-
-const FILMS_QUERY = gql`
-  {
-    launchesPast(limit: 10) {
-      id
-      mission_name
-    }
-  }
-`;
 
 const PEOPLE_QUERY = gql`
 query AllPeople ($first: Int!, $after: String!) {
@@ -42,11 +35,13 @@ query AllPeople ($first: Int!, $after: String!) {
 `
 
 function App() {
-  const { data, loading, error, fetchMore } = useQuery(PEOPLE_QUERY, {
+  const { data, loading, error } = useQuery(PEOPLE_QUERY, {
     variables: { first: 5, after: "" },
     notifyOnNetworkStatusChange:true
   });
-  
+  const [currentSelection, setCurrentSelection] = useState({name: "",filmConnection: {films: []},  homeworld: {name: ''}});
+  const [modalShow, setModalShow] = useState(false);
+
   console.log(data);
   if (loading) return <div>"Loading..."</div>;
   if (error) return <pre>{error.message}</pre>
@@ -55,8 +50,9 @@ function App() {
     console.log(e.target.value)
   }
 
-  const handleListSelection = (e: string) => {
-    alert(e);
+  const handleListSelection = (e: any) => {
+    setCurrentSelection(e)
+    setModalShow(true)
   }
 
   const handleNext = () => {
@@ -84,6 +80,11 @@ function App() {
         <input type="submit" value="Submit" />
       </form>
       <List list={data.allPeople.people} handleListSelection={handleListSelection}/>
+      <CharacterModal
+        data={currentSelection}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
       <footer className='footer-section'>
         <button onClick={handlePrevious} className="footer-button">&laquo; Previous</button>
         <button onClick={handleNext} className="footer-button">Next &raquo;</button>

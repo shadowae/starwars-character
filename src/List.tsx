@@ -7,7 +7,7 @@ interface listItem {
 }
 interface PropsType {
     list: listItem[],
-    handleListSelection (e: string): void;
+    handleListSelection (e: any): void;
 }
 
 const List = (props: PropsType) => {
@@ -19,7 +19,7 @@ console.log('list', list);
 return (
     <div className='list-unordered-section'>
         {list.map(item => (
-        <button onClick={() => handleListSelection(item.name)} key={item.id} className="btn">{item.name}</button>
+        <button onClick={() => handleListSelection(item)} key={item.id} className="btn">{item.name}</button>
         ))
         }
     </div>
