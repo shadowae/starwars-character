@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import deepMerge from "ts-deepmerge";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,7 +14,26 @@ const root = ReactDOM.createRoot(
 
 const client = new ApolloClient({
 uri: "https://swapi-graphql.netlify.app/.netlify/functions/index",
-cache: new InMemoryCache()
+cache: new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        allPeople: {
+          // Don't cache separate results based on
+          // any of this field's arguments.
+          keyArgs: false,
+
+          // Concatenate the incoming list items with
+          // the existing list items.
+          merge(existing = {}, incoming) {
+            return deepMerge(existing, incoming);
+          },
+          
+        }
+      }
+    }
+  }
+})
 });
 root.render(
   <React.StrictMode>

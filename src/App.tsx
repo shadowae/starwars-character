@@ -7,7 +7,7 @@ import { useQuery, gql } from "@apollo/client";
 
 // TODO: shortern if going with 2 api calls
 const PEOPLE_QUERY = gql`
-query AllPeople ($first: Int!, $after: String!) {
+query allPeople ($first: Int!, $after: String!) {
   allPeople (first: $first, after: $after) {
     pageInfo {
         endCursor
@@ -36,7 +36,7 @@ query AllPeople ($first: Int!, $after: String!) {
 `
 
 function App() {
-  const { data, loading, error } = useQuery(PEOPLE_QUERY, {
+  const { data, loading, error, fetchMore } = useQuery(PEOPLE_QUERY, {
     variables: { first: 5, after: "" },
     notifyOnNetworkStatusChange:true
   });
@@ -56,10 +56,10 @@ function App() {
   }
 
   const handleNext = () => {
-    // console.log('next')
+    console.log('next')
     // console.log('sad, ', data.allPeople.pageInfo.endCursor);
     
-    // fetchMore({variables: {after: data.allPeople.pageInfo.endCursor}})
+    fetchMore({variables: {after: data.allPeople.pageInfo.endCursor}})
   }
 
   const handlePrevious = () => {
