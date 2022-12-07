@@ -13,13 +13,11 @@ interface PropsType {
 const List = (props: PropsType) => {
     
 const {list, handleListSelection} = props;
-console.log('list', list);
-
 
 return (
     <div className='list-unordered-section'>
         {list.map(item => (
-        <button onClick={() => handleListSelection(item)} key={item.id} className="btn">{item.name}</button>
+        <button onClick={() => handleListSelection(item.id)} key={item.id} className="btn">{item.name}</button>
         ))
         }
     </div>

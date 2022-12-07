@@ -5,6 +5,7 @@ import List from './List';
 import CharacterModal from './CharacterModal';
 import { useQuery, gql } from "@apollo/client";
 
+// TODO: shortern if going with 2 api calls
 const PEOPLE_QUERY = gql`
 query AllPeople ($first: Int!, $after: String!) {
   allPeople (first: $first, after: $after) {
@@ -42,7 +43,6 @@ function App() {
   const [currentSelection, setCurrentSelection] = useState({name: "",filmConnection: {films: []},  homeworld: {name: ''}});
   const [modalShow, setModalShow] = useState(false);
 
-  console.log(data);
   if (loading) return <div>"Loading..."</div>;
   if (error) return <pre>{error.message}</pre>
   
@@ -81,7 +81,7 @@ function App() {
       </form>
       <List list={data.allPeople.people} handleListSelection={handleListSelection}/>
       <CharacterModal
-        data={currentSelection}
+        currentSelection={currentSelection}
         show={modalShow}
         onHide={() => setModalShow(false)}
       />
