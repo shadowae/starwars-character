@@ -3,13 +3,23 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+// uri: "https://graphql.org/swapi-graphql/",
+// uri: "https://api.spacex.land/graphql/",
+
+const client = new ApolloClient({
+uri: "https://swapi-graphql.netlify.app/.netlify/functions/index",
+cache: new InMemoryCache()
+});
 root.render(
   <React.StrictMode>
-    <App />
+   <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>,
   </React.StrictMode>
 );
 

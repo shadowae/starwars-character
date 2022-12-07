@@ -3,7 +3,7 @@ import './List.css';
 
 interface listItem {
     id: string,
-    firstname: string
+    name: string
 }
 interface PropsType {
     list: listItem[],
@@ -13,11 +13,13 @@ interface PropsType {
 const List = (props: PropsType) => {
     
 const {list, handleListSelection} = props;
+console.log('list', list);
+
 
 return (
     <div className='list-unordered-section'>
         {list.map(item => (
-        <button onClick={() => handleListSelection(item.firstname)} key={item.id} className="btn">{item.firstname}</button>
+        <button onClick={() => handleListSelection(item.name)} key={item.id} className="btn">{item.name}</button>
         ))
         }
     </div>
